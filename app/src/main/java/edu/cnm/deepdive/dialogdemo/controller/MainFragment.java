@@ -1,11 +1,15 @@
 package edu.cnm.deepdive.dialogdemo.controller;
 
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.PackageManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import edu.cnm.deepdive.dialogdemo.databinding.FragmentMainBinding;
@@ -37,4 +41,5 @@ public class MainFragment extends Fragment {
     binding = null;
     super.onDestroyView();
   }
+
 }
