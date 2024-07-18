@@ -54,7 +54,7 @@ public class EditFragment extends BottomSheetDialogFragment {
 
   private void takePicture() {
     Context context = requireContext();
-    File imageDir = new File(context.getFilesDir(), "captured-images");
+    File imageDir = new File(context.getFilesDir(), getString(R.string.images_subdirectory));
     //noinspection ResultOfMethodCallIgnored
     imageDir.mkdir();
     File file;
