@@ -3,6 +3,7 @@ package edu.cnm.deepdive.dialogdemo.controller;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import edu.cnm.deepdive.dialogdemo.R;
 import edu.cnm.deepdive.dialogdemo.databinding.FragmentEditBinding;
+import edu.cnm.deepdive.dialogdemo.model.Note;
 import edu.cnm.deepdive.dialogdemo.service.ImageFileProvider;
 import edu.cnm.deepdive.dialogdemo.viewmodel.NotesViewModel;
 import java.io.File;
@@ -42,6 +44,13 @@ public class EditFragment extends BottomSheetDialogFragment {
       @Nullable Bundle savedInstanceState) {
     binding = FragmentEditBinding.inflate(getLayoutInflater(), null, false);
     binding.takePicture.setOnClickListener((v) -> takePicture());
+    binding.cancel.setOnClickListener((v) -> dismiss());
+    binding.save.setOnClickListener((v) -> {
+      //noinspection DataFlowIssue
+      String comment = binding.notes.getText().toString();
+      viewModel.addNote(new Note(comment, uri));
+      dismiss();
+    });
     return binding.getRoot(); // Make sure that onViewCreated and onDestroyView get invoked.
   }
 
@@ -51,7 +60,12 @@ public class EditFragment extends BottomSheetDialogFragment {
     viewModel = new ViewModelProvider(requireActivity()).get(NotesViewModel.class);
     viewModel
         .getImageUri()
-        .observe(getViewLifecycleOwner(), (uri) -> binding.thumbnail.setImageURI(uri));
+        .observe(getViewLifecycleOwner(), (uri) -> {
+          if (uri != null) {
+            binding.thumbnail.setImageURI(uri);
+          }
+          this.uri = uri;
+        });
     takePhotoLauncher = registerForActivityResult(
         new ActivityResultContracts.TakePicture(), viewModel::confirmImageCapture);
   }
@@ -71,7 +85,7 @@ public class EditFragment extends BottomSheetDialogFragment {
     do {
       file = new File(imageDir, UUID.randomUUID().toString());
     } while (file.exists());
-    uri = FileProvider.getUriForFile(context, AUTHORITY, file);
+    Uri uri = FileProvider.getUriForFile(context, AUTHORITY, file);
     viewModel.setPendingImageUri(uri);
     takePhotoLauncher.launch(uri);
   }
