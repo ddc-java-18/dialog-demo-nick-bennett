@@ -6,7 +6,8 @@
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
   android:gravity="center|start"
-  android:padding="@dimen/half_dynamic_spacing">
+  android:padding="@dimen/half_dynamic_spacing"
+  android:background="?attr/selectableItemBackground">
 
   <TextView
     android:id="@+id/comment"

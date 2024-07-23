@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
 import edu.cnm.deepdive.dialogdemo.model.Note;
 import edu.cnm.deepdive.dialogdemo.service.NotesRepository;
 import java.util.List;
@@ -14,6 +15,8 @@ public class NotesViewModel extends AndroidViewModel {
 
   private final NotesRepository repository;
   private final MutableLiveData<Uri> imageUri;
+  private final MutableLiveData<Long> noteId;
+  private final LiveData<Note> note;
 
   private Uri pendingImageUri;
 
@@ -21,6 +24,8 @@ public class NotesViewModel extends AndroidViewModel {
     super(application);
     repository = NotesRepository.getInstance();
     imageUri = new MutableLiveData<>();
+    noteId = new MutableLiveData<>();
+    note = Transformations.switchMap(noteId, repository::getNote);
   }
 
   public LiveData<Uri> getImageUri() {
@@ -39,8 +44,16 @@ public class NotesViewModel extends AndroidViewModel {
     return repository.getNotes();
   }
 
+  public LiveData<Note> getNote() {
+    return note;
+  }
+
+  public void fetchNote(long id) {
+    noteId.setValue(id);
+  }
+  
   public void addNote(Note note) {
-    repository.addNote(note);
+    repository.save(note);
     imageUri.setValue(null);
   }
 

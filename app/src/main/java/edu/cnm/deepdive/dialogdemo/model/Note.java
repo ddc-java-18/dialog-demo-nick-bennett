@@ -14,9 +14,20 @@ public class Note {
   private String comment;
   private Uri image;
 
+  public Note() {
+  }
+
   public Note(String comment, Uri image) {
     this.comment = comment;
     this.image = image;
+  }
+
+  public long getId() {
+    return id;
+  }
+
+  public void setId(long id) {
+    this.id = id;
   }
 
   public String getComment() {

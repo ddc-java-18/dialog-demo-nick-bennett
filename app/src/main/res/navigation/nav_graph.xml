@@ -19,10 +19,9 @@
       app:destination="@id/edit_fragment">
 
       <argument
-        android:name="additional_stuff"
-        app:argType="string"
-        android:defaultValue="@null"
-        app:nullable="true"/>
+        android:name="note_id"
+        app:argType="long"
+        android:defaultValue="0L"/>
 
     </action>
 
@@ -33,9 +32,9 @@
     android:name="edu.cnm.deepdive.dialogdemo.controller.EditFragment">
 
     <argument
-      android:name="additional_stuff"
-      app:argType="string"
-      android:defaultValue="Test"/>
+      android:name="note_id"
+      app:argType="long"
+      android:defaultValue="0L"/>
 
   </dialog>
 
